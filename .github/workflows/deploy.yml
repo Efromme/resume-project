@@ -48,7 +48,7 @@ jobs:
               "commit_sha": "${{ github.sha }}",
               "commit_author": "${{ github.event.head_commit.author.name }}",
               "branch": "${{ github.ref_name }}",
-              "files_changed": ${{ github.event.head_commit.modified != null && length(github.event.head_commit.modified) || 0 }},
+              "files_changed": 1,
               "invalidation_id": "${{ steps.invalidation.outputs.invalidation_id }}"
             }'
           echo "✅ Deployment logged to DynamoDB via Lambda"
