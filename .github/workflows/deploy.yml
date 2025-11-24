@@ -41,7 +41,7 @@ jobs:
           
       - name: Log deployment to AWS Lambda
         run: |
-          curl -X POST https://dha8uvgm1f.execute-api.us-east-1.amazonaws.com/prod/log-deployment \
+          curl -X POST https://dha8uvgm1f.execute-api.us-east-1.amazonaws.com/prod/deployments \
             -H "Content-Type: application/json" \
             -d '{
               "commit_message": "${{ github.event.head_commit.message }}",
