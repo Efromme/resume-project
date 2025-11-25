@@ -33,8 +33,8 @@
     <div class="collapse navbar-collapse" id="navbarResponsive">
       <ul class="navbar-nav">
         <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#about">About</a></li>
-        <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#aws-costs">AWS Dashboard</a></li>
-        <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#deployments">Pipeline</a></li>
+        <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#aws-costs">Site Cost Tracker</a></li>
+        <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#deployments">Deployment Pipeline Tracking</a></li>
         <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#experience">Experience</a></li>
         <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#education">Education</a></li>
         <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#skills">Skills</a></li>
@@ -73,9 +73,11 @@
     <!-- AWS Cost Dashboard -->
     <section class="resume-section" id="aws-costs">
       <div class="resume-section-content">
-        <h2 class="mb-5">Live AWS Infrastructure</h2>
-        <p class="lead mb-4">Real-time cost tracking powered by Lambda, DynamoDB, and API Gateway</p>
-
+        <h2 class="mb-2">Daily Site Cost Tracker</h2>
+        <!--        <p class="lead mb-4">Real-time cost tracking powered by Lambda, DynamoDB, and API Gateway</p> -->
+        <p class="lead mb-2">
+          <i class="fab fa-aws"></i> Real-time cost tracking powered by Lambda, DynamoDB, and API Gateway
+        </p>
         <div class="row mb-4">
           <div class="col-md-4 mb-3">
             <div class="card text-center border-primary">
@@ -120,42 +122,42 @@
 
     <hr class="m-0" />
     <!-- AWS Deployment Pipeline -->
-<section class="resume-section" id="deployments">
-    <div class="resume-section-content">
-        <h2 class="mb-5">Deployment Pipeline</h2>
-        <p class="lead mb-4">
-            <i class="fab fa-aws"></i> Automated CI/CD powered by GitHub Actions, Lambda, and DynamoDB
+    <section class="resume-section" id="deployments">
+      <div class="resume-section-content">
+        <h2 class="mb-2">Deployment Pipeline Tracking</h2>
+        <p class="lead mb-2">
+          <i class="fab fa-aws"></i> Automated CI/CD powered by GitHub Actions, Lambda, and DynamoDB
         </p>
-        
-        <div class="card mb-4">
-            <div class="card-header bg-primary text-white">
-                <h5 class="mb-0">Latest Deployment</h5>
+
+        <div class="card mb-2">
+          <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">Latest Deployment</h5>
+          </div>
+          <div class="card-body">
+            <div id="latest-deployment">
+              <p class="text-center">
+                <i class="fas fa-spinner fa-spin"></i> Loading...
+              </p>
             </div>
-            <div class="card-body">
-                <div id="latest-deployment">
-                    <p class="text-center">
-                        <i class="fas fa-spinner fa-spin"></i> Loading...
-                    </p>
-                </div>
-            </div>
+          </div>
         </div>
-        
+
         <div class="card">
-            <div class="card-header">
-                <h5 class="mb-0">
-                    Deployment History 
-                    <small class="text-muted">(Last 10)</small>
-                </h5>
+          <div class="card-header">
+            <h5 class="mb-0">
+              Deployment History
+              <small class="text-muted">(Last 10)</small>
+            </h5>
+          </div>
+          <div class="card-body">
+            <div id="deployment-history">
+              <!-- Populated by JavaScript -->
             </div>
-            <div class="card-body">
-                <div id="deployment-history">
-                    <!-- Populated by JavaScript -->
-                </div>
-            </div>
+          </div>
         </div>
-    </div>
-</section>
-<hr class="m-0" />
+      </div>
+    </section>
+    <hr class="m-0" />
     <!-- Experience-->
     <section class="resume-section" id="experience">
       <div class="resume-section-content">
