@@ -1,7 +1,7 @@
 // Your API endpoint
 const DEPLOYMENTS_API = 'https://dha8uvgm1f.execute-api.us-east-1.amazonaws.com/prod/deployments';
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     console.log('🚀 Loading deployment history...');
     fetchDeployments();
 });
@@ -9,32 +9,33 @@ document.addEventListener('DOMContentLoaded', function() {
 async function fetchDeployments() {
     try {
         const response = await fetch(DEPLOYMENTS_API);
-        
+
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-        
+
         const data = await response.json();
         console.log('📊 Deployments received:', data);
-        
+
         if (data.deployments && data.deployments.length > 0) {
             displayLatestDeployment(data.deployments[0]);
             displayDeploymentHistory(data.deployments);
         } else {
-            document.getElementById('latest-deployment').innerHTML = 
+            document.getElementById('latest-deployment').innerHTML =
                 '<p class="text-muted">No deployments recorded yet.</p>';
         }
-        
+
     } catch (error) {
         console.error('❌ Error loading deployments:', error);
-        document.getElementById('latest-deployment').innerHTML = 
+        document.getElementById('latest-deployment').innerHTML =
             '<p class="text-danger">Unable to load deployment status</p>';
     }
 }
 
 function displayLatestDeployment(deployment) {
-    const timeAgo = getTimeAgo(deployment.deployed_at);
-    
+    // Use timestamp (Unix seconds) instead of deployed_at (ISO string)
+    const timeAgo = getTimeAgo(deployment.timestamp * 1000);
+
     const html = `
         <div class="row">
             <div class="col-md-8">
@@ -42,32 +43,44 @@ function displayLatestDeployment(deployment) {
                     <span class="badge bg-success">✅ SUCCESS</span>
                     <span class="ms-2">${escapeHtml(deployment.commit_message)}</span>
                 </h5>
-                <p class="mb-1"><strong>Commit:</strong> <code>${deployment.commit_sha}</code></p>
+                <p class="mb-1">
+                    <strong>Commit:</strong> 
+                    <a href="${deployment.commit_url}" target="_blank" class="text-decoration-none">
+                        <code>${deployment.commit_sha}</code>
+                        <i class="fas fa-external-link-alt fa-xs"></i>
+                    </a>
+                </p>
                 <p class="mb-1"><strong>Author:</strong> ${escapeHtml(deployment.commit_author)}</p>
                 <p class="mb-1"><strong>Branch:</strong> ${deployment.branch}</p>
-                <p class="mb-1"><strong>Files Changed:</strong> ${deployment.files_changed}</p>
-                <p class="mb-0"><strong>S3 Bucket:</strong> ${deployment.s3_bucket}</p>
+                <p class="mb-0">
+                    <strong>Pipeline:</strong> 
+                    <a href="${deployment.workflow_url}" target="_blank" class="text-decoration-none">
+                        View GitHub Actions Run
+                        <i class="fas fa-external-link-alt fa-xs"></i>
+                    </a>
+                </p>
             </div>
             <div class="col-md-4 text-end">
                 <p class="text-muted mb-3">${timeAgo}</p>
                 <div class="badge bg-info mb-2">
-                    <i class="fab fa-aws"></i> AWS Lambda Tracked
+                    <i class="fab fa-aws"></i> AWS Lambda
                 </div>
                 <br>
                 <div class="badge bg-secondary">
-                    <i class="fab fa-cloudflare"></i> ${deployment.cloudfront_invalidation}
+                    <i class="fab fa-cloudflare"></i> CloudFront
                 </div>
             </div>
         </div>
     `;
-    
+
     document.getElementById('latest-deployment').innerHTML = html;
 }
 
 function displayDeploymentHistory(deployments) {
     const html = deployments.map(dep => {
-        const timeAgo = getTimeAgo(dep.deployed_at);
-        
+        // Use timestamp (Unix seconds) instead of deployed_at (ISO string)
+        const timeAgo = getTimeAgo(dep.timestamp * 1000);
+
         return `
             <div class="d-flex justify-content-between align-items-center py-2 border-bottom">
                 <div>
@@ -79,22 +92,29 @@ function displayDeploymentHistory(deployments) {
             </div>
         `;
     }).join('');
-    
+
     document.getElementById('deployment-history').innerHTML = html;
 }
 
-function getTimeAgo(timestamp) {
-    const now = new Date();
-    const then = new Date(timestamp);
-    const diff = Math.abs(now - then);
-    
-    const minutes = Math.floor(diff / 60000);
+function getTimeAgo(timestampMs) {
+    // timestampMs is Unix timestamp in milliseconds
+    const now = Date.now();
+    const diff = now - timestampMs;
+
+    // Handle clock skew or future timestamps
+    if (diff < 0) {
+        return 'just now';
+    }
+
+    const seconds = Math.floor(diff / 1000);
+    const minutes = Math.floor(seconds / 60);
     const hours = Math.floor(minutes / 60);
     const days = Math.floor(hours / 24);
-    
+
     if (days > 0) return `${days}d ago`;
     if (hours > 0) return `${hours}h ago`;
     if (minutes > 0) return `${minutes}m ago`;
+    if (seconds > 10) return `${seconds}s ago`;
     return 'just now';
 }
 
