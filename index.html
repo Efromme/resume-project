@@ -34,6 +34,7 @@
       <ul class="navbar-nav">
         <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#about">About</a></li>
         <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#aws-costs">AWS Dashboard</a></li>
+        <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#deployments">Pipeline</a></li>
         <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#experience">Experience</a></li>
         <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#education">Education</a></li>
         <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#skills">Skills</a></li>
@@ -118,6 +119,43 @@
     </section>
 
     <hr class="m-0" />
+    <!-- AWS Deployment Pipeline -->
+<section class="resume-section" id="deployments">
+    <div class="resume-section-content">
+        <h2 class="mb-5">Deployment Pipeline</h2>
+        <p class="lead mb-4">
+            <i class="fab fa-aws"></i> Automated CI/CD powered by GitHub Actions, Lambda, and DynamoDB
+        </p>
+        
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">Latest Deployment</h5>
+            </div>
+            <div class="card-body">
+                <div id="latest-deployment">
+                    <p class="text-center">
+                        <i class="fas fa-spinner fa-spin"></i> Loading...
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    Deployment History 
+                    <small class="text-muted">(Last 10)</small>
+                </h5>
+            </div>
+            <div class="card-body">
+                <div id="deployment-history">
+                    <!-- Populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<hr class="m-0" />
     <!-- Experience-->
     <section class="resume-section" id="experience">
       <div class="resume-section-content">
@@ -252,6 +290,8 @@
     <script src="js/scripts.js"></script>
     <!-- Cost Dashboard -->
     <script src="js/cost-dashboard.js"></script>
+    <!-- Deployment Tracker -->
+    <script src="js/deployment-tracker.js"></script>
 </body>
 
 </html>
