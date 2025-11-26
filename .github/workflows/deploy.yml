@@ -25,7 +25,6 @@ jobs:
           aws s3 sync . s3://resume.ethanfromme.com \
             --exclude ".git/*" \
             --exclude ".github/*" \
-            --exclude "lambda/*" \
             --exclude "*.md"
           
       - name: Create CloudFront invalidation
