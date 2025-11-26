@@ -38,7 +38,39 @@ jobs:
             --output text)
           echo "invalidation_id=$INVALIDATION_ID" >> $GITHUB_OUTPUT
           echo "✅ CloudFront invalidation created: $INVALIDATION_ID"
-          
+      
+      - name: Package and Deploy All Lambda Functions
+        run: |
+         # Define an array of your Lambda functions and their source files.
+         # Format: "functionName:sourceFile.py"
+         LAMBDAS=(
+            "daily-cost-tracker:cost_tracker.py"
+            "get-daily-costs:get_costs.py"
+            "get-deployment-history:get_deployments.py"
+            "log-deployment:log_deployment.py"
+         )
+
+         # Loop through the array, package, and deploy each function
+         for entry in "${LAMBDAS[@]}"; do
+            # Split the entry into function_name and source_file
+            function_name=$(echo $entry | cut -d: -f1)
+            source_file=$(echo $entry | cut -d: -f2)
+            zip_file="${function_name}.zip"
+
+            echo "📦 Packaging $function_name from $source_file..."
+            
+            # 1. Create a zip file for the current function
+            zip -r "$zip_file" "$source_file"
+            
+            # 2. Update the Lambda function code
+            aws lambda update-function-code \
+             --function-name "$function_name" \
+             --zip-file fileb://"$zip_file" \
+             --region us-east-1
+            
+            echo "✅ Deployed $function_name successfully."
+         done
+             
       - name: Log deployment to AWS Lambda
         run: |
           curl -X POST https://dha8uvgm1f.execute-api.us-east-1.amazonaws.com/prod/deployments \
