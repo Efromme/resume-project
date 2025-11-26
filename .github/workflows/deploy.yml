@@ -10,6 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
+      # This is a true YAML comment to trigger a new run for testing (Nov 26, 2025)
       - name: Checkout code
         uses: actions/checkout@v3
         
@@ -50,5 +51,5 @@ jobs:
               "commit_url": "${{ github.event.head_commit.url }}",
               "workflow_run_url": "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}",
               "invalidation_id": "${{ steps.invalidation.outputs.invalidation_id }}"
-            }'
-          echo "✅ Deployment logged to DynamoDB via Lambda"
+            }'  
+          echo "✅ Deployment logged to DynamoDB via Lambda"          
