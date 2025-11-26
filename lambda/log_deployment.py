@@ -39,7 +39,7 @@ def lambda_handler(event, context):
             'status': 'success',
             'deployed_at': now.isoformat(),
             'commit_url': body.get('commit_url', ''),  # NEW
-            'workflow_url': body.get('workflow_url', ''),  # NEW
+            'workflow_url': body.get('workflow_run_url', ''),  # NEW
             's3_bucket': 'resume.ethanfromme.com',
             'cloudfront_invalidation': body.get('invalidation_id', 'N/A')
         }
