@@ -33,9 +33,24 @@ async function fetchDeployments() {
 }
 
 function displayLatestDeployment(deployment) {
-    // Use timestamp (Unix seconds) instead of deployed_at (ISO string)
     const timeAgo = getTimeAgo(deployment.timestamp * 1000);
-
+    
+    // Build commit link - only if URL exists and is valid
+    const commitLink = (deployment.commit_url && deployment.commit_url.startsWith('http'))
+        ? `<a href="${deployment.commit_url}" target="_blank" class="text-decoration-none">
+             <code>${deployment.commit_sha}</code>
+             <i class="fas fa-external-link-alt fa-xs ms-1"></i>
+           </a>`
+        : `<code>${deployment.commit_sha}</code>`;
+    
+    // Build workflow link - only if URL exists and is valid
+    const workflowLink = (deployment.workflow_url && deployment.workflow_url.startsWith('http'))
+        ? `<a href="${deployment.workflow_url}" target="_blank" class="text-decoration-none">
+             View GitHub Actions
+             <i class="fas fa-external-link-alt fa-xs ms-1"></i>
+           </a>`
+        : `<span class="text-muted">Not available</span>`;
+    
     const html = `
         <div class="row">
             <div class="col-md-8">
@@ -44,20 +59,16 @@ function displayLatestDeployment(deployment) {
                     <span class="ms-2">${escapeHtml(deployment.commit_message)}</span>
                 </h5>
                 <p class="mb-1">
-                    <strong>Commit:</strong> 
-                    <a href="${deployment.commit_url}" target="_blank" class="text-decoration-none">
-                        <code>${deployment.commit_sha}</code>
-                        <i class="fas fa-external-link-alt fa-xs"></i>
-                    </a>
+                    <strong>Commit:</strong> ${commitLink}
                 </p>
-                <p class="mb-1"><strong>Author:</strong> ${escapeHtml(deployment.commit_author)}</p>
-                <p class="mb-1"><strong>Branch:</strong> ${deployment.branch}</p>
+                <p class="mb-1">
+                    <strong>Author:</strong> ${escapeHtml(deployment.commit_author)}
+                </p>
+                <p class="mb-1">
+                    <strong>Branch:</strong> ${deployment.branch}
+                </p>
                 <p class="mb-0">
-                    <strong>Pipeline:</strong> 
-                    <a href="${deployment.workflow_url}" target="_blank" class="text-decoration-none">
-                        View GitHub Actions Run
-                        <i class="fas fa-external-link-alt fa-xs"></i>
-                    </a>
+                    <strong>Pipeline:</strong> ${workflowLink}
                 </p>
             </div>
             <div class="col-md-4 text-end">
@@ -72,7 +83,7 @@ function displayLatestDeployment(deployment) {
             </div>
         </div>
     `;
-
+    
     document.getElementById('latest-deployment').innerHTML = html;
 }
 
